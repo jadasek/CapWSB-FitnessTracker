@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,14 +73,14 @@ class UserApiIntegrationTest extends IntegrationTestBase {
     void shouldReturnDetailsAboutUser_whenGettingUserById() throws Exception {
         User user1 = existingUser(generateUser());
 
-        mockMvc.perform(get("/v1/users/{id}", user1.getId()).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/users/search?id={id}", user1.getId()).contentType(MediaType.APPLICATION_JSON))
                 .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty())
-                .andExpect(jsonPath("$.firstName").value(user1.getFirstName()))
-                .andExpect(jsonPath("$.lastName").value(user1.getLastName()))
-                .andExpect(jsonPath("$.birthdate").value(ISO_DATE.format(user1.getBirthdate())))
-                .andExpect(jsonPath("$.email").value(user1.getEmail()));
+                .andExpect(jsonPath("$[0].firstName").value(user1.getFirstName()))
+                .andExpect(jsonPath("$[0].lastName").value(user1.getLastName()))
+                .andExpect(jsonPath("$[0].birthdate").value(ISO_DATE.format(user1.getBirthdate())))
+                .andExpect(jsonPath("$[0].email").value(user1.getEmail()));
 
     }
 
@@ -87,7 +88,7 @@ class UserApiIntegrationTest extends IntegrationTestBase {
     void shouldReturnDetailsAboutUser_whenGettingUserByEmail() throws Exception {
         User user1 = existingUser(generateUser());
 
-        mockMvc.perform(get("/v1/users/email").param("email", user1.getEmail()).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/users/email?email={email}", user1.getEmail()).contentType(MediaType.APPLICATION_JSON))
                 .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -101,7 +102,7 @@ class UserApiIntegrationTest extends IntegrationTestBase {
         User user2 = existingUser(generateUserWithDate(LocalDate.of(2024, 8, 11)));
 
 
-        mockMvc.perform(get("/v1/users/older/{time}", LocalDate.of(2024, 8, 10)).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/users/bydate/{birthdate}", LocalDate.of(2024, 8, 10)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -117,7 +118,7 @@ class UserApiIntegrationTest extends IntegrationTestBase {
         User user1 = existingUser(generateUser());
 
 
-        mockMvc.perform(delete("/v1/users/{userId}", user1.getId())
+        mockMvc.perform(delete("/v1/users/remove/{userId}", user1.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(log())
                 .andExpect(status().isNoContent());
@@ -150,7 +151,7 @@ class UserApiIntegrationTest extends IntegrationTestBase {
                 USER_BIRTHDATE,
                 USER_EMAIL);
 
-        mockMvc.perform(post("/v1/users")
+        mockMvc.perform(post("/v1/users/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(creationRequest))
                 .andDo(log())
@@ -190,7 +191,7 @@ class UserApiIntegrationTest extends IntegrationTestBase {
                 USER_BIRTHDATE,
                 USER_EMAIL);
 
-        mockMvc.perform(put("/v1/users/{userId}", user1.getId())
+        mockMvc.perform(put("/v1/users/update/{userId}", user1.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(updateRequest));
 
