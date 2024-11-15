@@ -1,6 +1,9 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
+import com.capgemini.wsb.fitnesstracker.user.api.SimpleUserDto;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
+import com.capgemini.wsb.fitnesstracker.user.api.UserEmailDto;
 import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -87,7 +90,7 @@ class UserController {
     public User addUser(@RequestBody UserDto userDto) throws InterruptedException {
         User passedUser = userMapper.toEntity(userDto);
         User createdUser = userService.createUser(passedUser);
-        System.out.println("User with e-mail: " + userDto.email() + "passed to the request");
+        System.out.println("User with e-mail: " + userDto.email() + " passed to the request");
         return createdUser;
     }
 

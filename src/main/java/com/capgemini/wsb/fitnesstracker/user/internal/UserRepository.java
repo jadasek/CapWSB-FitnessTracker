@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Collections;
 
-interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
      * Query searching users by email address. It matches by exact match.
@@ -44,5 +44,6 @@ interface UserRepository extends JpaRepository<User, Long> {
                 .filter(user -> email == null || Objects.equals(user.getEmail(), email))
                 .collect(Collectors.toList());
     }
+    
     
 }

@@ -41,7 +41,7 @@ class TrainingApiIntegrationTest extends IntegrationTestBase {
                 .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].user.id").value(user1.getId()))
+                .andExpect(jsonPath("$[0].user.Id").value(user1.getId()))
                 .andExpect(jsonPath("$[0].user.firstName").value(user1.getFirstName()))
                 .andExpect(jsonPath("$[0].user.lastName").value(user1.getLastName()))
                 .andExpect(jsonPath("$[0].user.email").value(user1.getEmail()))
