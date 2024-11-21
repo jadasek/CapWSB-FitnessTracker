@@ -1,6 +1,7 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +29,12 @@ public class TrainingController {
     private final TrainingService trainingService;
 
     @Autowired
-    public TrainingController(TrainingProvider trainingProvider, TrainingService trainingService) {
-        this.trainingProvider = trainingProvider;
+    @Lazy
+    public TrainingController(TrainingService trainingService, TrainingProvider trainingProvider) {
         this.trainingService = trainingService;
+        this.trainingProvider = trainingProvider;
     }
+    
 
     /**
      * Endpoint to retrieve all available trainings.

@@ -51,5 +51,21 @@ public interface TrainingProvider {
      * @return A list of {@link TrainingDto} representing trainings of the specified activity type.
      */
     List<TrainingDto> getTrainingsByActivityType(ActivityType activityType);
+
+
+    /**
+     * Get the count of trainings for a specific user within a given date range.
+     *
+     * This method calculates the number of training sessions a specific user has completed
+     * within the specified date range (from startDate to endDate). It helps in tracking the
+     * user's training activity over a certain period.
+     *
+     * @param userId The ID of the user whose training count is to be retrieved.
+     * @param startDate The start date of the period to check for completed trainings.
+     * @param endDate The end date of the period to check for completed trainings.
+     * @return An integer representing the number of training sessions completed by the user
+     *         within the specified date range.
+     */
+    int getMonthlyTrainingCount(Long userId, Date startDate, Date endDate);
 }
 

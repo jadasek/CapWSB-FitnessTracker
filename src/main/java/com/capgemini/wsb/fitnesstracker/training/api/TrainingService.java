@@ -1,5 +1,6 @@
 package com.capgemini.wsb.fitnesstracker.training.api;
 
+import java.util.Date;
 
 /**
  * Interface for managing training data.
@@ -28,4 +29,8 @@ public interface TrainingService {
      * @return The updated {@link TrainingDto}.
      */
     TrainingDto updateTraining(Long id, TrainingDto trainingDto);
+
+
+
+    
 }

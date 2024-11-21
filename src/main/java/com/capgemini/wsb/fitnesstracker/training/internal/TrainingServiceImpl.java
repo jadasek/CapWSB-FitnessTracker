@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 // TODO: Provide Impl
@@ -24,13 +25,16 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
 
     private final TrainingRepository trainingRepository;
     private final TrainingMapper trainingMapper;
+    private final TrainingProvider trainingProvider;
     private final UserRepository userRepository;
 
     @Autowired
-    public TrainingServiceImpl(TrainingRepository trainingRepository, TrainingMapper trainingMapper, UserRepository userRepository) {
+    @Lazy
+    public TrainingServiceImpl(TrainingRepository trainingRepository, TrainingMapper trainingMapper, UserRepository userRepository, TrainingProvider trainingProvider) {
         this.trainingRepository = trainingRepository;
         this.trainingMapper = trainingMapper;
         this.userRepository = userRepository;
+        this.trainingProvider = trainingProvider;
     }
 
     @Override
@@ -113,5 +117,9 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
                 .map(trainingMapper::toDto)
                 .orElseThrow(() -> new RuntimeException("Training not found"));
     }
-    
+
+    @Override
+    public int getMonthlyTrainingCount(Long userId, Date startDate, Date endDate) {
+        return trainingProvider.getMonthlyTrainingCount(userId, startDate, endDate);
+    }
 }
