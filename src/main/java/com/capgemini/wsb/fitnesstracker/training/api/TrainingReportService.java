@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 
-// Zadanie 3.2 czegoś brakuje...
+// Zadanie 3.2 
 @Service
 public class TrainingReportService {
 
@@ -34,33 +34,23 @@ public class TrainingReportService {
      * Generate and send monthly training reports for all users.
      */
     public void generateAndSendMonthlyReports() {
-        // Get all users
         List<User> users = userProvider.findAllUsers();
 
-        // Generate and send report for each user
         users.forEach(user -> {
-            // Get training count for the current month
-            // Get the current date
 
             Date currentDate = new Date();
 
-            // Calculate the start of the month
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(currentDate);
-            calendar.set(Calendar.DAY_OF_MONTH, 1);  // Set to the first day of the month
+            calendar.set(Calendar.DAY_OF_MONTH, 1);  
             Date startDate = calendar.getTime();
 
-            // Calculate the end of the month
             calendar.add(Calendar.MONTH, 1);
-            calendar.set(Calendar.DAY_OF_MONTH, 0);  // Set to the last day of the previous month
+            calendar.set(Calendar.DAY_OF_MONTH, 0);  
             Date endDate = calendar.getTime();
-
-            // Now call the method with the correct parameters
             int trainingCount = trainingProvider.getMonthlyTrainingCount(user.getId(), startDate, endDate);
 
-            // Generate the email content
             String report = generateReport(user.getFirstName(), trainingCount);
-            // Send the email
             sendEmail(user.getEmail(), report);
         });
     }
@@ -73,7 +63,7 @@ public class TrainingReportService {
      * @return The email content.
      */
     private String generateReport(String userName, int trainingCount) {
-        return String.format("Hello %s,\n\nYou completed %d trainings this month.\n\nBest regards,\nFitness Tracker Team",
+        return String.format("Hello %s,\n\nYou completed %d trainings this month.",
                 userName, trainingCount);
     }
 
