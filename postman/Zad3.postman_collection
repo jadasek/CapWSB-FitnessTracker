@@ -206,7 +206,18 @@
 			"name": "Get All Trainings",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/v1/trainings",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"trainings"
+					]
+				}
 			},
 			"response": []
 		},
@@ -214,7 +225,20 @@
 			"name": "Get Users' Trainings",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/v1/trainings/user/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"trainings",
+						"user",
+						"3"
+					]
+				}
 			},
 			"response": []
 		},
@@ -222,7 +246,20 @@
 			"name": "Get Training Before Date",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/v1/trainings/finished/2024-01-17",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"trainings",
+						"finished",
+						"2024-01-17"
+					]
+				}
 			},
 			"response": []
 		},
@@ -230,7 +267,20 @@
 			"name": "Get By Activity Type",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/v1/trainings/activity/RUNNING",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"trainings",
+						"activity",
+						"RUNNING"
+					]
+				}
 			},
 			"response": []
 		},
@@ -241,7 +291,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "                {\r\n                \"firstName\": \"Adam\",\r\n                \"lastName\": \"Kowalski\",\r\n                \"birthdate\": \"1968-01-03\",\r\n                \"email\": \"adam.kowalski@wp.pl\"\r\n                }",
+					"raw": "{\r\n    \"user\": { \"id\": 1 }, \r\n    \"startTime\": \"2024-11-18T10:00:00Z\",\r\n    \"endTime\": \"2024-11-18T11:00:00Z\",\r\n    \"activityType\": \"RUNNING\",\r\n    \"distance\": 5.0,\r\n    \"averageSpeed\": 10.0\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -249,15 +299,15 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/v1/users/create",
+					"raw": "localhost:8081/v1/trainings/trainings",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
 						"v1",
-						"users",
-						"create"
+						"trainings",
+						"trainings"
 					]
 				}
 			},
@@ -270,7 +320,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "              {\r\n                \"firstName\": \"Janina\",\r\n                \"lastName\": \"Nowak\",\r\n                \"birthdate\": \"1945-03-15\",\r\n                \"email\": \"nowakjanina45@gmail.com\"\r\n                }",
+					"raw": "{\r\n    \"averageSpeed\": 23.0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -278,15 +328,15 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/v1/users/update/2",
+					"raw": "localhost:8081/v1/trainings/trainings/2",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
 						"v1",
-						"users",
-						"update",
+						"trainings",
+						"trainings",
 						"2"
 					]
 				}
