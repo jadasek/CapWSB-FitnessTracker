@@ -41,7 +41,7 @@ class TrainingApiIntegrationTest extends IntegrationTestBase {
                 .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].user.Id").value(user1.getId()))
+                .andExpect(jsonPath("$[0].user.id").value(user1.getId()))
                 .andExpect(jsonPath("$[0].user.firstName").value(user1.getFirstName()))
                 .andExpect(jsonPath("$[0].user.lastName").value(user1.getLastName()))
                 .andExpect(jsonPath("$[0].user.email").value(user1.getEmail()))
@@ -62,7 +62,7 @@ class TrainingApiIntegrationTest extends IntegrationTestBase {
         Training training1 = persistTraining(generateTraining(user1));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS+00:00");
         sdf.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
-        mockMvc.perform(get("/v1/trainings/{userId}", user1.getId()).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/trainings/user/{userId}", user1.getId()).contentType(MediaType.APPLICATION_JSON))
                 .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -110,7 +110,7 @@ class TrainingApiIntegrationTest extends IntegrationTestBase {
         Training training2 = persistTraining(generateTrainingWithActivityType(user1, ActivityType.TENNIS));
         Training training3 = persistTraining(generateTrainingWithActivityType(user1, ActivityType.TENNIS));
 
-        mockMvc.perform(get("/v1/trainings/activityType").param("activityType", "TENNIS").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/trainings/activity").param("activityType", "TENNIS").contentType(MediaType.APPLICATION_JSON))
                 .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -135,7 +135,7 @@ class TrainingApiIntegrationTest extends IntegrationTestBase {
 
         String requestBody = """
                 {
-                    "userId": "%s",
+                    "user": { "id": "%s" }, 
                     "startTime": "2024-04-01T11:00:00",
                     "endTime": "2024-04-01T11:00:00",
                     "activityType": "RUNNING",
@@ -143,7 +143,7 @@ class TrainingApiIntegrationTest extends IntegrationTestBase {
                     "averageSpeed": 8.2
                 }
                 """.formatted(user1.getId());
-        mockMvc.perform(post("/v1/trainings").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+        mockMvc.perform(post("/v1/trainings/trainings").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andDo(log())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.user.id").value(user1.getId()))
@@ -162,7 +162,7 @@ class TrainingApiIntegrationTest extends IntegrationTestBase {
         Training training1 = persistTraining(generateTrainingWithActivityType(user1, ActivityType.RUNNING));
         String requestBody = """
                 {
-                "userId": "%s",
+                "user": { "id": "%s" }, 
                 "startTime": "2022-04-01T10:00:00",
                 "endTime": "2022-04-01T11:00:00",
                 "activityType": "TENNIS",
@@ -170,7 +170,7 @@ class TrainingApiIntegrationTest extends IntegrationTestBase {
                 "averageSpeed": 0.0
                 }
                 """.formatted(user1.getId());
-        mockMvc.perform(put("/v1/trainings/{trainingId}", training1.getId()).contentType(MediaType.APPLICATION_JSON).content(requestBody))
+        mockMvc.perform(put("/v1/trainings/trainings/{trainingId}", training1.getId()).contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.user.id").value(user1.getId()))
